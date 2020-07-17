@@ -6,7 +6,7 @@
    [datahike.query :as dq]
    [datahike.lru :as lru]
    [me.tonsky.persistent-sorted-set.arrays :as da]
-   #?@(:cljs [datalog.parser.type :refer [BindColl BindIgnore BindScalar BindTuple
+   #?(:cljs [datalog.parser.type :refer [BindColl BindIgnore BindScalar BindTuple
                                           Constant DefaultSrc Pattern RulesVar SrcVar Variable
                                           Not Or And Predicate PlainSymbol]])
    [datalog.parser :refer [parse]]

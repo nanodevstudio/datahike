@@ -1,8 +1,8 @@
 (ns ^:no-doc datahike.pull-api
   (:require
    [datahike.db :as db]
-   #?@(:cljs [datalog.parser.pull :refer [PullSpec]])
-   [datalog.parser.pull :as dpp])
+   [datahike.datom #?@(:cljs [:refer [Datom]])]
+   [datalog.parser.pull :as dpp #?@(:cljs [:refer [PullSpec]])])
   #?(:clj
      (:import
       [datahike.datom Datom]

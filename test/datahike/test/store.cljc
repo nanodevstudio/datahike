@@ -2,8 +2,8 @@
   (:require
    #?(:cljs [cljs.test    :as t :refer-macros [is are deftest testing]]
       :clj  [clojure.test :as t :refer        [is are deftest testing]])
-   [datahike.api :as d])
-  (:import [java.lang System]))
+   [datahike.api :as d]
+   [datahike.system :refer [temp-dir]]))
 
 (defn test-store [cfg]
   (let [_ (d/delete-database cfg)]
@@ -21,9 +21,7 @@
       (is (d/database-exists? cfg)))))
 
 (deftest test-db-file-store
-  (test-store {:store {:backend :file :path (case (System/getProperty "os.name")
-                                              "Windows 10" (str (System/getProperty "java.io.tmpdir") "api-fs")
-                                              "/tmp/api-fs")}}))
+  (test-store {:store {:backend :file :path (temp-dir "api-fs")}}))
 
 (deftest test-db-mem-store
   (test-store {:store {:backend :mem :id "test-mem"}}))

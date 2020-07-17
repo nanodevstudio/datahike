@@ -1,6 +1,9 @@
 (ns datahike.schema
-  (:require [clojure.spec.alpha :as s])
-  (:import [datahike.datom Datom]))
+  (:require
+   [clojure.spec.alpha :as s]
+   [datahike.datom #?@(:cljs [:refer [Datom]])])
+  #?(:clj
+     (:import [datahike.datom Datom])))
 
 (s/def :db.type/id #(or (= (class %) java.lang.Long) string?))
 

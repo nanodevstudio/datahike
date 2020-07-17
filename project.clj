@@ -5,7 +5,9 @@
   :url "https://github.com/replikativ/datahike"
 
   :dependencies [[org.clojure/clojure       "1.10.1"   :scope "provided"]
-                 [org.clojure/clojurescript "1.10.597" :scope "provided"]
+                 [org.clojure/clojurescript "1.10.764" :scope "provided"]
+                 [org.clojure/core.async "1.2.603"]
+                 [lambdaisland/uri "1.4.54"]
                  [persistent-sorted-set     "0.1.2"]
                  [org.clojure/tools.reader "1.3.2"]
                  [environ "1.2.0"]
@@ -44,15 +46,34 @@
                                    :pretty-print  false
                                    :elide-asserts true
                                    :output-wrapper false
+                                   :language-in :es-next
+                                   :language-out :es-next
                                    :parallel-build true
                                    :checked-arrays :warn}
                         :notify-command ["release-js/wrap_bare.sh"]}
+
+                       {:id "node"
+                        :source-paths ["src"]
+                        :assert false
+                        :compiler {:output-to     "release-js/datahike.node.js"
+                                   :optimizations :advanced
+                                   :pretty-print  false
+                                   :target :nodejs
+                                   :npm-deps true
+                                   :elide-asserts true
+                                   :output-wrapper false
+                                   :language-in :es-next
+                                   :language-out :es-next
+                                   :parallel-build true
+                                   :checked-arrays :warn}}
 
                        {:id "advanced"
                         :source-paths ["src" "test"]
                         :compiler {:output-to     "target/datahike.js"
                                    :optimizations :advanced
                                    :source-map    "target/datahike.js.map"
+                                   :language-in :es-next
+                                   :language-out :es-next
                                    :pretty-print  true
                                    :recompile-dependents false
                                    :parallel-build true
@@ -64,6 +85,8 @@
                                    :optimizations :advanced
                                    :source-map    "target/datahike.js.map"
           ; :pretty-print  true
+                                   :language-in :es-next
+                                   :language-out :es-next
                                    :recompile-dependents false
                                    :parallel-build true
                                    :checked-arrays :warn
@@ -78,6 +101,8 @@
                                    :output-dir    "target/none"
                                    :optimizations :none
                                    :source-map    true
+                                   :language-in :es-next
+                                   :language-out :es-next
                                    :recompile-dependents false
                                    :parallel-build true
                                    :checked-arrays :warn}}]}

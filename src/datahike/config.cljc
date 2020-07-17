@@ -1,11 +1,11 @@
 (ns datahike.config
   (:require [clojure.edn :as edn]
             [clojure.spec.alpha :as s]
-            [zufall.core :as z]
+            [datahike.random-animal :as z]
             [environ.core :refer [env]]
             [taoensso.timbre :as log]
-            [datahike.store :as ds])
-  (:import [java.net URI]))
+            [datahike.store :as ds]
+            [lambdaisland.uri :refer [uri join]]))
 
 (s/def ::index #{:datahike.index/hitchhiker-tree :datahike.index/persistent-set})
 (s/def ::keep-history? boolean?)
@@ -148,20 +148,20 @@
 (s/def :datahike/config-depr (s/keys :req-un [::backend]
                                      :opt-un [::username ::password ::path ::host ::port]))
 
-(defn uri->config [uri]
-  (let [base-uri (URI. uri)
-        _ (when-not (= (.getScheme base-uri) "datahike")
-            (throw (ex-info "URI scheme is not datahike conform." {:uri uri})))
-        sub-uri (URI. (.getSchemeSpecificPart base-uri))
-        backend (keyword (.getScheme sub-uri))
-        [username password] (when-let [user-info (.getUserInfo sub-uri)]
-                              (clojure.string/split user-info #":"))
+(defn uri->config [uri-source]
+  (let [base-uri (uri uri-source)
+        _ (when-not (= (:scheme base-uri) "datahike")
+            (throw (ex-info "URI scheme is not datahike conform." {:uri uri-source})))
+        sub-uri (uri (:path base-uri))
+        backend (keyword (:scheme sub-uri))
+        username (:user sub-uri)
+        password (:password sub-uri)
         credentials (when-not (and (nil? username) (nil? password))
                       {:username username
                        :password password})
-        port (.getPort sub-uri)
-        path (.getPath sub-uri)
-        host (.getHost sub-uri)
+        port (:port sub-uri)
+        path (:path sub-uri)
+        host (:host sub-uri)
         config (merge
                 {:backend backend
                  :uri uri}
@@ -170,8 +170,8 @@
                   {:host host})
                 (when-not (empty? path)
                   {:path path})
-                (when (<= 0 port)
-                  {:port port}))]
+                (when port
+                  {:port (edn/read-string port)}))]
     config))
 
 (defn validate-config-depr [config]

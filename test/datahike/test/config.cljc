@@ -1,17 +1,17 @@
 (ns datahike.test.config
   (:require
    #?(:cljs [cljs.test :as t :refer-macros [is are deftest testing]]
-      :clj  [clojure.test :as t :refer [is are deftest testing use-fixtures]])
-   [datahike.config :refer :all]
+      :clj  [clojure.test :as t :refer [is are deftest testing]])
+   [datahike.config :as c]
    [datahike.test.core]
    [datahike.core :as d]))
 
 (deftest int-from-env-test
   (is (= 1000
-         (int-from-env :foo 1000))))
+         (c/int-from-env :foo 1000))))
 
 (deftest bool-from-env-test
-  (is (bool-from-env :foo true)))
+  (is (c/bool-from-env :foo true)))
 
 (deftest uri-test
   (let [mem-uri "datahike:mem://config-test"
@@ -19,7 +19,7 @@
         level-uri "datahike:level:///tmp/config-test"
         pg-uri "datahike:pg://alice:foo@localhost:5432/config-test"]
 
-    (are [x y] (= x (uri->config y))
+    (are [x y] (= x (c/uri->config y))
       {:backend :mem :host "config-test" :uri mem-uri}
       mem-uri
 
@@ -45,15 +45,15 @@
                          :schema-flexibility :write}]
     (is (= (merge default-new-cfg
                   {:store {:backend :mem :id "deprecated-test"}})
-           (from-deprecated mem-cfg)))
+           (c/from-deprecated mem-cfg)))
     (is (= (merge default-new-cfg
                   {:store {:backend :file
                            :path "/deprecated/test"}})
-           (from-deprecated file-cfg)))))
+           (c/from-deprecated file-cfg)))))
 
 (deftest load-config-test
   (testing "configuration defaults"
-    (let [{:keys [store name] :as config} (load-config)]
+    (let [{:keys [store name] :as config} (c/load-config)]
       (is (= {:store {:backend :mem
                       :id "default"}
               :keep-history? true

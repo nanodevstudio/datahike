@@ -5,8 +5,8 @@
    [datahike.api :as d]
    [datahike.schema :as ds]
    [datahike.db :as dd]
-   [datahike.test.core :as tdc])
-  (:import [java.lang System]))
+   [datahike.system :refer [temp-dir]]
+   [datahike.test.core :as tdc]))
 
 #?(:clj
    (defn random-uuid []
@@ -267,10 +267,7 @@
 
 (deftest test-schema-persistence
   (testing "test file persistence"
-    (let [os (System/getProperty "os.name")
-          path (case os
-                 "Windows 10"  (str (System/getProperty "java.io.tmpdir") "dh-test-persistence")
-                 "/tmp/dh-test-persistence")
+    (let [path (temp-dir "dh-test-persistence")
           cfg {:store {:backend :file
                        :path path}
                :initial-tx [name-schema]}

@@ -1,25 +1,25 @@
 (ns datahike.query
   (:require
-    [#?(:cljs cljs.reader :clj clojure.edn) :as edn]
-    [clojure.set :as set]
-    [clojure.string :as str]
-    [clojure.walk :as walk]
-    [datahike.db :as db #?(:cljs :refer-macros :clj :refer) [raise]]
-    [me.tonsky.persistent-sorted-set.arrays :as da]
-    [datahike.lru]
-    [datahike.impl.entity :as de]
-    #?@(:cljs [datalog.parser.type :refer [BindColl BindIgnore BindScalar BindTuple Constant
-                                           FindColl FindRel FindScalar FindTuple PlainSymbol
-                                           RulesVar SrcVar Variable]])
-    [datalog.parser.impl :as dpi]
-    [datalog.parser.impl.proto :as dpip]
-    [datahike.pull-api :as dpa]
-    [datalog.parser :refer [parse]]
-    [datalog.parser.pull :as dpp])
+   [#?(:cljs cljs.reader :clj clojure.edn) :as edn]
+   [clojure.set :as set]
+   [clojure.string :as str]
+   [clojure.walk :as walk]
+   [datahike.db :as db #?(:cljs :refer-macros :clj :refer) [raise]]
+   [me.tonsky.persistent-sorted-set.arrays :as da]
+   [datahike.lru]
+   [datahike.impl.entity :as de]
+   #?(:cljs [datalog.parser.type :refer [BindColl BindIgnore BindScalar BindTuple Constant
+                                         FindColl FindRel FindScalar FindTuple PlainSymbol
+                                         RulesVar SrcVar Variable]])
+   [datalog.parser.impl :as dpi]
+   [datalog.parser.impl.proto :as dpip]
+   [datahike.pull-api :as dpa]
+   [datalog.parser :refer [parse]]
+   [datalog.parser.pull :as dpp])
   #?(:clj (:import [clojure.lang Reflector]
                    [datalog.parser.type Aggregate BindColl BindIgnore BindScalar BindTuple
-                                        Constant FindColl FindRel FindScalar FindTuple PlainSymbol Pull
-                                        RulesVar SrcVar Variable]
+                    Constant FindColl FindRel FindScalar FindTuple PlainSymbol Pull
+                    RulesVar SrcVar Variable]
                    [datahike.datom Datom]
                    [java.lang.reflect Method]
                    [java.util Date])))
